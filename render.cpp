@@ -1,7 +1,12 @@
 #include "game.h"
-#include <SDL/SDL.h>
+
+namespace  RenderData
+{
+  SDL_Surface* Display{NULL};
+}
+using namespace RenderData;
 
 void render()
 {
-  
+
 }
