@@ -1,10 +1,11 @@
 #pragma once
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 namespace RenderData
 {
-  extern SDL_Surface* Display;
+  extern SDL_Window* Display;
+  extern SDL_Renderer* renderer;
 
   const int WIDTH{640};
   const int HEIGHT{480};

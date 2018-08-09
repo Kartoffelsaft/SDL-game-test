@@ -4,11 +4,24 @@
 
 void init()
 {
-  RenderData::Display = SDL_SetVideoMode(RenderData::WIDTH, RenderData::HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+  using namespace RenderData;
 
-  if(RenderData::Display == NULL)
+  if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
   {
-    std::cout << "Display Initialization Failed" << std::endl;
+    SDL_GetError();
+    beginShutdown();
+  }
+
+  Display = SDL_CreateWindow("SDL Game", 0, 0, WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_VULKAN);
+  renderer = SDL_CreateRenderer(Display, -1, SDL_RENDERER_ACCELERATED);
+
+  if
+  (
+    Display == NULL ||
+    renderer == NULL
+  )
+  {
+    SDL_GetError();
     beginShutdown();
   }
 }

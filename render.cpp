@@ -2,7 +2,8 @@
 
 namespace  RenderData
 {
-  SDL_Surface* Display{NULL};
+  SDL_Window* Display{NULL};
+  SDL_Renderer* renderer{NULL};
 }
 using namespace RenderData;
 
