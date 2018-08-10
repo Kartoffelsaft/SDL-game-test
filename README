@@ -1,0 +1,5 @@
+This will be very similar to the termgametest project I did, but using SDL instead of the terminal. Similarly, you use this to compile:
+
+make
+
+you will also need the SDL2 library (or something that will satisfy the -lSDL2 argument in the makefile)
