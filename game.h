@@ -1,10 +1,13 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <vulkan/vulkan.h>
+
+#include <iostream>
 
 namespace RenderData
 {
-  extern SDL_Window* Display;
+  extern SDL_Window* display;
   extern SDL_Renderer* renderer;
 
   const int WIDTH{640};
