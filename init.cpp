@@ -1,14 +1,32 @@
 #include "game.h"
 
-#include <iostream>
-
 void init()
 {
-  RenderData::Display = SDL_SetVideoMode(RenderData::WIDTH, RenderData::HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+  using namespace RenderData;
 
-  if(RenderData::Display == NULL)
+  if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
   {
-    std::cout << "Display Initialization Failed" << std::endl;
+    std::cout << SDL_GetError() << std::endl;
     beginShutdown();
+  }
+
+  display = SDL_CreateWindow("SDL Game", 20, 20, WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+  renderer = SDL_CreateRenderer(display, -1, SDL_RENDERER_ACCELERATED);
+
+  if
+  (
+    display == NULL ||
+    renderer == NULL
+  )
+  {
+    std::cout << SDL_GetError() << std::endl;
+    beginShutdown();
+  }
+
+  for(int i{0}; i < SDL_GetNumRenderDrivers(); i++)
+  {
+    SDL_RendererInfo info{0};
+    SDL_GetRendererInfo(renderer, &info);
+    std::cout << info.name << std::endl;
   }
 }

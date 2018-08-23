@@ -1,5 +1,5 @@
 compiler = g++
-arguments = -lSDL
+arguments = -lSDL2
 sources = ./*.cpp
 headers = ./
 output = game
