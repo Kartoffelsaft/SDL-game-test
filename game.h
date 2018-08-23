@@ -1,9 +1,12 @@
 #pragma once
 
+#include "geometry.h"
+
 #include <SDL2/SDL.h>
 #include <vulkan/vulkan.h>
 
 #include <iostream>
+#include <vector>
 
 namespace RenderData
 {
@@ -22,3 +25,5 @@ void shutdown();
 
 bool running();
 void beginShutdown();
+
+SDL_Point* convertToSDLPointArray(std::vector<Geometry::point>);
