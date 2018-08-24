@@ -15,7 +15,7 @@ void render()
   SDL_RenderClear(renderer);
 
   Geometry::mesh miscobj;
-  miscobj.points = {{0, 0, 0}, {60,40, 0}, {80, 80, 0}, {20, 30, 0}};
+  miscobj.points = {{1, 1, 0}, {60,40, 0}, {80, 80, 0}, {20, 30, 0}};
 
   if(SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF) != 0)
   {std::cout << SDL_GetError() << std::endl;}
