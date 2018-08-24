@@ -10,7 +10,7 @@ void init()
     beginShutdown();
   }
 
-  display = SDL_CreateWindow("SDL Game", 20, 20, WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+  display = SDL_CreateWindow("SDL Game", 20, 20, xResolution, yResolution, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
   renderer = SDL_CreateRenderer(display, -1, SDL_RENDERER_ACCELERATED);
 
   if
