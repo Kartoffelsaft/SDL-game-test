@@ -13,8 +13,10 @@ namespace RenderData
   extern SDL_Window* display;
   extern SDL_Renderer* renderer;
 
-  const int WIDTH{640};
-  const int HEIGHT{480};
+  extern Geometry::point camera;
+
+  const int WIDTH{180};
+  const int HEIGHT{180};
 }
 
 void init();
@@ -26,4 +28,12 @@ void shutdown();
 bool running();
 void beginShutdown();
 
+
 SDL_Point* convertToSDLPointArray(std::vector<Geometry::point>);
+
+
+float quickSine(float);
+float quickCosine(float);
+float quickTangent(float);
+
+float quickATan(float, float);
