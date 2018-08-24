@@ -3,7 +3,7 @@
 #include <cmath>
 #include "math.h"
 
-const int SINE_RESOLUTION{4000};
+const int SINE_RESOLUTION{8000};
 static float sineTable[SINE_RESOLUTION]{0};
 const float PI{3.14159265};
 
@@ -13,7 +13,7 @@ float quickSine(float x)
   {
     for(int i{0}; i < SINE_RESOLUTION; i++)
     {
-      sineTable[i] = std::sin(i * PI/SINE_RESOLUTION);
+      sineTable[i] = std::sin(i * PI/(SINE_RESOLUTION * 2));
     }
   }
 
@@ -39,29 +39,29 @@ float quickTangent(float x)
 
 float quickATan(float opposite, float adjacent)
 {
-  // float min{0};
-  // float max{180};
-  // float mid{(min + max)/2};
-  //
-  // float tangent{opposite/adjacent};
-  // float aTanCheck{quickTangent(mid)};
-  //
-  // while (std::abs(tangent - aTanCheck) > 0.0005)
-  // {
-  //   if(tangent > aTanCheck)
-  //   {
-  //     min = mid;
-  //   }
-  //   if(tangent < aTanCheck)
-  //   {
-  //     max = mid;
-  //   }
-  //   mid = (min + max)/2;
-  //
-  //   aTanCheck = quickTangent(mid);
-  // }
-  //
-  // return mid;
+  float min{-90};
+  float max{90};
+  float mid{(min + max)/2};
 
-  return atan(opposite/adjacent) * 180/PI;
+  float tangent{opposite/adjacent};
+  float aTanCheck{quickTangent(mid)};
+
+  while (std::abs(tangent - aTanCheck) > 0.003)
+  {
+    if(tangent > aTanCheck)
+    {
+      min = mid;
+    }
+    if(tangent < aTanCheck)
+    {
+      max = mid;
+    }
+    mid = (min + max)/2;
+
+    aTanCheck = quickTangent(mid);
+  }
+
+  return mid;
+
+  // return atan(opposite/adjacent) * 180/PI;
 }
