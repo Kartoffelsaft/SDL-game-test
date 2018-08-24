@@ -13,7 +13,7 @@ namespace RenderData
   extern SDL_Window* display;
   extern SDL_Renderer* renderer;
 
-  extern Geometry::point camera;
+  extern Geometry::camera camera;
 
   const int WIDTH{180};
   const int HEIGHT{180};

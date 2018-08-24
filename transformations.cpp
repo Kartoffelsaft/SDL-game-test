@@ -4,8 +4,8 @@ SDL_Point convertToSDLPoint(Geometry::point oldPoint)
 {
   SDL_Point newPoint{0, 0};
 
-  newPoint.x = 2 * ((int)quickATan(oldPoint.x - RenderData::camera.x, oldPoint.z - RenderData::camera.z)+45);
-  newPoint.y = 2 * ((int)quickATan(oldPoint.y - RenderData::camera.y, oldPoint.z - RenderData::camera.z)+45);
+  newPoint.x = 2 * ((int)quickATan(oldPoint.x - RenderData::camera.location.x, oldPoint.z - RenderData::camera.location.z)+45);
+  newPoint.y = 2 * ((int)quickATan(oldPoint.y - RenderData::camera.location.y, oldPoint.z - RenderData::camera.location.z)+45);
 
   return newPoint;
 }

@@ -22,7 +22,7 @@ float quickSine(float x)
   {x += 360;}   //setting x to be within 360 range
 
   if(x <= 90)
-  {return sineTable[(int)(SINE_RESOLUTION * x/90)];}   //using recursion to funnel the x variable into the relevant 90` angle
+  {return sineTable[(int)((SINE_RESOLUTION -1) * x/90)];}   //using recursion to funnel the x variable into the relevant 90` angle
   if(x > 90 && x <= 180)
   {return quickSine(180-x);}
   if(x > 180 && x <= 270)
@@ -39,29 +39,29 @@ float quickTangent(float x)
 
 float quickATan(float opposite, float adjacent)
 {
-  float min{-90};
-  float max{90};
-  float mid{(min + max)/2};
+  // float min{-90};
+  // float max{90};
+  // float mid{(min + max)/2};
+  //
+  // float tangent{opposite/adjacent};
+  // float aTanCheck{quickTangent(mid)};
+  //
+  // while (std::abs(max - min) > 0.003)
+  // {
+  //   if(tangent > aTanCheck)
+  //   {
+  //     min = mid;
+  //   }
+  //   if(tangent < aTanCheck)
+  //   {
+  //     max = mid;
+  //   }
+  //   mid = (min + max)/2;
+  //
+  //   aTanCheck = quickTangent(mid);
+  // }
+  //
+  // return mid;
 
-  float tangent{opposite/adjacent};
-  float aTanCheck{quickTangent(mid)};
-
-  while (std::abs(tangent - aTanCheck) > 0.003)
-  {
-    if(tangent > aTanCheck)
-    {
-      min = mid;
-    }
-    if(tangent < aTanCheck)
-    {
-      max = mid;
-    }
-    mid = (min + max)/2;
-
-    aTanCheck = quickTangent(mid);
-  }
-
-  return mid;
-
-  // return atan(opposite/adjacent) * 180/PI;
+  return atan(opposite/adjacent) * 180/PI;
 }

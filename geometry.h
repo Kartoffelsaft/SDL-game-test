@@ -24,4 +24,11 @@ namespace Geometry
     std::vector<point> points;
     std::vector<triangle> tris;
   };
+
+  class camera
+  {
+  public:
+    point location;
+    point rotaion;  //rotation is a point class because it would end up being 3 values anyway
+  };
 }

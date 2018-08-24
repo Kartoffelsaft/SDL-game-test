@@ -5,7 +5,7 @@ namespace  RenderData
   SDL_Window* display{NULL};
   SDL_Renderer* renderer{NULL};
 
-  Geometry::point camera{0, 0, 0};
+  Geometry::camera camera{{0, 0, 0}, {0, 0, 0}};
 }
 using namespace RenderData;
 
@@ -17,8 +17,7 @@ void render()
   SDL_RenderClear(renderer);
 
   Geometry::mesh miscobj;
-  miscobj.points = {{-20, 60, 1}, {60, -40, 1}, {80, 80, 1}, {-20, 60, 1}};
-  camera.z -= 10;
+  miscobj.points = {{-20, 60, 20}, {60, -40, 1}, {80, 80, 1}, {-20, 60, 1}};
 
   if(SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF) != 0)
   {std::cout << SDL_GetError() << std::endl;}
