@@ -15,6 +15,7 @@ namespace RenderData
 
   extern int xResolution;
   extern int yResolution;
+  const int FIELD_OF_VIEW{90};
 
   extern Geometry::camera camera;
 }

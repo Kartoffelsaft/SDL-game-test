@@ -17,6 +17,12 @@ void keyboardState()
 
   if(keys[SDL_SCANCODE_D])
   {camera.location.x += 10;}
+
+  if(keys[SDL_SCANCODE_R])
+  {camera.location.y += 10;}
+
+  if(keys[SDL_SCANCODE_F])
+  {camera.location.y -= 10;}
 }
 
 void events()
