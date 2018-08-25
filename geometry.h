@@ -29,6 +29,6 @@ namespace Geometry
   {
   public:
     point location;
-    point rotaion;  //rotation is a point class because it would end up being 3 values anyway
+    point rotation;  //rotation is a point class because it would end up being 3 values anyway
   };
 }
