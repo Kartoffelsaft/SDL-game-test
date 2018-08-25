@@ -35,33 +35,47 @@ float quickCosine(float x)
 {return quickSine(x+90);}
 
 float quickTangent(float x)
-{return quickSine(x)/quickCosine(x);}
+{
+  float sine{quickSine(x)};
+  float cosine{quickCosine(x)};
+
+  if(cosine == 0)
+  {
+    return 99999;
+  }
+
+  return sine/cosine;
+}
 
 float quickATan(float opposite, float adjacent)
 {
-  // float min{-90};
-  // float max{90};
-  // float mid{(min + max)/2};
-  //
-  // float tangent{opposite/adjacent};
-  // float aTanCheck{quickTangent(mid)};
-  //
-  // while (std::abs(max - min) > 0.003)
-  // {
-  //   if(tangent > aTanCheck)
-  //   {
-  //     min = mid;
-  //   }
-  //   if(tangent < aTanCheck)
-  //   {
-  //     max = mid;
-  //   }
-  //   mid = (min + max)/2;
-  //
-  //   aTanCheck = quickTangent(mid);
-  // }
-  //
-  // return mid;
+  float min{-90};
+  float max{90};
+  float mid{(min + max)/2};
 
-  return atan(opposite/adjacent) * 180/PI;
+  if(adjacent == 0)
+  {return 90;}
+
+  float tangent{opposite/adjacent};
+  float aTanCheck{quickTangent(mid)};
+
+  while (std::abs(max - min) > 0.003)
+  {
+    if(tangent > aTanCheck)
+    {min = mid;}
+    if(tangent < aTanCheck)
+    {max = mid;}
+    if(tangent == aTanCheck)
+    {return mid;}
+
+    mid = (min + max)/2;
+    // if(mid < 0.003)
+    // {return mid;}
+
+    aTanCheck = quickTangent(mid);
+  }
+
+  return mid;
+
+  // return atan(opposite/adjacent) * 180/PI;
 }
