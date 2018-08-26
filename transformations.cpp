@@ -42,7 +42,7 @@ SDL_Point convertToSDLPoint(Geometry::point oldPoint)
 
   SDL_Point newPoint{0, 0};
 
-  Geometry::point rotationAdjustedPoint{rotate(camera.location, oldPoint, camera.rotation)};
+  Geometry::point rotationAdjustedPoint{rotate(camera.location, oldPoint, -camera.rotation)};
   newPoint.x = (int)(((yResolution + xResolution)/(FIELD_OF_VIEW) * quickATan(rotationAdjustedPoint.x - camera.location.x, rotationAdjustedPoint.z - camera.location.z))+(xResolution/2));
   newPoint.y = (int)(((yResolution + xResolution)/(FIELD_OF_VIEW) * -quickATan(rotationAdjustedPoint.y - camera.location.y, rotationAdjustedPoint.z - camera.location.z))+(yResolution/2));
 

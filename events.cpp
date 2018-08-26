@@ -6,18 +6,22 @@ void keyboardState()
 
   using RenderData::camera;
 
-  if(keys[SDL_SCANCODE_W])
-  {camera.location.z += 5;}
-  if(keys[SDL_SCANCODE_S])
-  {camera.location.z -= 5;}
-  if(keys[SDL_SCANCODE_A])
-  {camera.location.x -= 5;}
-  if(keys[SDL_SCANCODE_D])
-  {camera.location.x += 5;}
-  if(keys[SDL_SCANCODE_R])
-  {camera.location.y += 5;}
-  if(keys[SDL_SCANCODE_F])
-  {camera.location.y -= 5;}
+  {
+    using namespace Geometry;
+
+    if(keys[SDL_SCANCODE_W])
+    {camera.move(LOC_FOWARD * 5);}
+    if(keys[SDL_SCANCODE_S])
+    {camera.move(LOC_BACK * 5);}
+    if(keys[SDL_SCANCODE_A])
+    {camera.move(LOC_LEFT * 5);}
+    if(keys[SDL_SCANCODE_D])
+    {camera.move(LOC_RIGHT * 5);}
+    if(keys[SDL_SCANCODE_R])
+    {camera.move(LOC_UP * 5);}
+    if(keys[SDL_SCANCODE_F])
+    {camera.move(LOC_DOWN * 5);}
+  }
 
   if(keys[SDL_SCANCODE_UP])
   {camera.rotation.x += 2;}

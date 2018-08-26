@@ -1,3 +1,5 @@
+#include "game.h"
+
 #include <vector>
 
 namespace Geometry
@@ -9,11 +11,17 @@ namespace Geometry
     float y;
     float z;
 
-    point operator+(point b)
+    point operator+(point b) const
     {return {this->x + b.x, this->y + b.y, this->z + b.z};}
 
-    point operator-(point b)
+    point operator-(point b) const
     {return {this->x - b.x, this->y - b.y, this->z - b.z};}
+
+    point operator*(float b) const
+    {return {this->x * b, this->y * b, this->z * b};}
+
+    point operator-() const
+    {return{-this->x, -this->y, -this->z};}
 
     point& operator+=(point b)
     {
@@ -32,7 +40,30 @@ namespace Geometry
 
       return *this;
     }
+
+    point& operator*=(float b)
+    {
+      this->x *= b;
+      this->y *= b;
+      this->z *= b;
+
+      return *this;
+    }
   };
+
+  const point ORIGIN{0, 0, 0};
+  const point LOC_RIGHT{1, 0, 0};
+  const point ROT_RIGHT{0, 1, 0};
+  const point LOC_LEFT{-1, 0, 0};
+  const point ROT_LEFT{0, -1, 0};
+  const point LOC_UP{0, 1, 0};
+  const point ROT_UP{1, 0, 0};
+  const point LOC_DOWN{0, -1, 0};
+  const point ROT_DOWN{-1, 0, 0};
+  const point LOC_FOWARD{0, 0, 1};
+  const point ROT_YAW_RIGHT{0, 0, 1};
+  const point LOC_BACK{0, 0, -1};
+  const point ROT_YAW_LEFT{0, 0, -1};
 
   class triangle
   {
@@ -67,5 +98,7 @@ namespace Geometry
   public:
     point location;
     point rotation;  //rotation is a point class because it would end up being 3 values anyway
+
+    void move(point direction);
   };
 }
