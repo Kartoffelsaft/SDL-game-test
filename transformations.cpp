@@ -9,14 +9,27 @@ Geometry::point rotate(Geometry::point pivot, Geometry::point oldPoint, Geometry
   // newPoint.y = relativePoint.y + (relativePoint.y * (quickCosine(rotation.x) + quickCosine(rotation.z))) - (relativePoint.y * (quickSine(rotation.x) + quickSine(rotation.z))) + pivot.y;
   // newPoint.z = relativePoint.z + (relativePoint.z * (quickCosine(rotation.y) + quickCosine(rotation.x))) - (relativePoint.z * (quickSine(rotation.y) + quickSine(rotation.x))) + pivot.z;
 
-  newPoint.y *= quickCosine(rotation.x) + quickSine(rotation.x);
-  newPoint.z *= -quickSine(rotation.x) + quickCosine(rotation.x);
+  // newPoint.y *= quickCosine(rotation.x) + quickSine(rotation.x);
+  // newPoint.z *= -quickSine(rotation.x) + quickCosine(rotation.x);
+  //
+  // newPoint.x *= quickCosine(rotation.y) + quickSine(rotation.y);
+  // newPoint.z *= -quickSine(rotation.y) + quickCosine(rotation.y);
+  //
+  // newPoint.x *= quickCosine(rotation.z) + quickSine(rotation.z);
+  // newPoint.y *= -quickSine(rotation.z) + quickCosine(rotation.z);
 
-  newPoint.x *= quickCosine(rotation.y) + quickSine(rotation.y);
-  newPoint.z *= -quickSine(rotation.y) + quickCosine(rotation.y);
+  Geometry::point holder{newPoint};
 
-  newPoint.x *= quickCosine(rotation.z) + quickSine(rotation.z);
-  newPoint.y *= -quickSine(rotation.z) + quickCosine(rotation.z);
+  newPoint.y = holder.y * quickCosine(rotation.x) + holder.z * -quickSine(rotation.x);
+  newPoint.z = holder.y * quickSine(rotation.x) + holder.z * quickCosine(rotation.x);
+  holder = newPoint;
+
+  newPoint.x = holder.x * quickCosine(rotation.y) + holder.z * -quickSine(rotation.y);
+  newPoint.z = holder.x * quickSine(rotation.y) + holder.z * quickCosine(rotation.y);
+  holder = newPoint;
+
+  newPoint.x = holder.x * quickCosine(rotation.z) + holder.y * -quickSine(rotation.z);
+  newPoint.y = holder.x * quickSine(rotation.z) + holder.y * quickCosine(rotation.z);
 
   newPoint.x += pivot.x;
   newPoint.y += pivot.y;
