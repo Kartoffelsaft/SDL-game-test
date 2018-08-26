@@ -38,3 +38,5 @@ float quickCosine(float);
 float quickTangent(float);
 
 float quickATan(float, float);
+
+Geometry::point rotate(Geometry::point, Geometry::point, Geometry::point);

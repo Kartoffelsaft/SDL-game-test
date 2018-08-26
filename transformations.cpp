@@ -2,7 +2,7 @@
 
 Geometry::point rotate(Geometry::point pivot, Geometry::point oldPoint, Geometry::point rotation)
 {
-  Geometry::point newPoint{oldPoint.x - pivot.x, oldPoint.y - pivot.y, oldPoint.z - pivot.z};
+  Geometry::point newPoint{oldPoint - pivot};
   // Geometry::point relativePoint{oldPoint.x - pivot.x, oldPoint.y - pivot.y, oldPoint.z - pivot.z};
 
   // newPoint.x = relativePoint.x + (relativePoint.x * (quickCosine(rotation.y) + quickCosine(rotation.z))) - (relativePoint.x * (quickSine(rotation.y) + quickSine(rotation.z))) + pivot.x;
@@ -31,9 +31,7 @@ Geometry::point rotate(Geometry::point pivot, Geometry::point oldPoint, Geometry
   newPoint.x = holder.x * quickCosine(rotation.z) + holder.y * -quickSine(rotation.z);
   newPoint.y = holder.x * quickSine(rotation.z) + holder.y * quickCosine(rotation.z);
 
-  newPoint.x += pivot.x;
-  newPoint.y += pivot.y;
-  newPoint.z += pivot.z;
+  newPoint += pivot;
 
   return newPoint;
 }

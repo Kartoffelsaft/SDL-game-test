@@ -8,6 +8,30 @@ namespace Geometry
     float x;
     float y;
     float z;
+
+    point operator+(point b)
+    {return {this->x + b.x, this->y + b.y, this->z + b.z};}
+
+    point operator-(point b)
+    {return {this->x - b.x, this->y - b.y, this->z - b.z};}
+
+    point& operator+=(point b)
+    {
+      this->x += b.x;
+      this->y += b.y;
+      this->z += b.z;
+
+      return *this;
+    }
+
+    point& operator-=(point b)
+    {
+      this->x -= b.x;
+      this->y -= b.y;
+      this->z -= b.z;
+
+      return *this;
+    }
   };
 
   class triangle
@@ -16,6 +40,19 @@ namespace Geometry
     point* A;
     point* B;
     point* C;
+
+    triangle()
+    {
+      A = 0;
+      B = 0;
+      C = 0;
+    }
+    ~triangle()
+    {
+      delete A;
+      delete B;
+      delete C;
+    }
   };
 
   class mesh
