@@ -71,6 +71,20 @@ SDL_Point convertToSDLPoint(Geometry::point oldPoint)
   newPoint.x = (int)(((yResolution + xResolution)/(FIELD_OF_VIEW) * quickATan(rotationAdjustedPoint.x - camera.location.x, rotationAdjustedPoint.z - camera.location.z))+(xResolution/2));
   newPoint.y = (int)(((yResolution + xResolution)/(FIELD_OF_VIEW) * -quickATan(rotationAdjustedPoint.y - camera.location.y, rotationAdjustedPoint.z - camera.location.z))+(yResolution/2));
 
+  if(rotationAdjustedPoint.z - camera.location.z
+     < 0)
+  {
+    if(newPoint.x > xResolution/2)
+    {newPoint.x = -xResolution;}
+    if(newPoint.x < xResolution/2)
+    {newPoint.x = 2 * xResolution;}
+
+    if(newPoint.y > yResolution/2)
+    {newPoint.y = -yResolution;}
+    if(newPoint.y < yResolution/2)
+    {newPoint.y = 2 * yResolution;}
+  }
+
   return newPoint;
 }
 
@@ -81,7 +95,21 @@ SDL_Point* convertToSDLPointArray(std::vector<Geometry::point> oldPoints)
   for(int i{0}; i < oldPoints.size(); i++)
   {
     newPoints.at(i + 1) = convertToSDLPoint(oldPoints.at(i));
+
+    if(newPoints.at(i).x < -RenderData::xResolution/1.01 ||
+       newPoints.at(i).x > RenderData::xResolution * 1.99 ||
+       newPoints.at(i).y < -RenderData::yResolution/1.01 ||
+       newPoints.at(i).y > RenderData::yResolution * 1.99)
+    {
+      goto dontRender;
+    }
   }
 
+  finish:
   return &newPoints[1];
+
+  dontRender:
+    for(int i{0}; i < newPoints.size(); i++)
+    {newPoints.at(i) = {-1, -1};}
+    goto finish;
 }
