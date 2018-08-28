@@ -1,6 +1,6 @@
 #include "game.h"
 
-Geometry::point rotate(Geometry::point pivot, Geometry::point oldPoint, Geometry::point rotation)
+Geometry::point rotate(Geometry::point pivot, Geometry::point oldPoint, Geometry::point rotation, const char order[3])
 {
   Geometry::point newPoint{oldPoint - pivot};
   // Geometry::point relativePoint{oldPoint.x - pivot.x, oldPoint.y - pivot.y, oldPoint.z - pivot.z};
@@ -20,18 +20,43 @@ Geometry::point rotate(Geometry::point pivot, Geometry::point oldPoint, Geometry
 
   Geometry::point holder{newPoint};
 
-  newPoint.y = holder.y * quickCosine(rotation.x) + holder.z * -quickSine(rotation.x);
-  newPoint.z = holder.y * quickSine(rotation.x) + holder.z * quickCosine(rotation.x);
-  holder = newPoint;
+  for(int i{0}; i < 3; i++)
+  {
+    if(order[i] == 'x')
+    {
+      newPoint.y = holder.y * quickCosine(rotation.x) + holder.z * -quickSine(rotation.x);
+      newPoint.z = holder.y * quickSine(rotation.x) + holder.z * quickCosine(rotation.x);
+      holder = newPoint;
+    }
 
-  newPoint.x = holder.x * quickCosine(rotation.y) + holder.z * -quickSine(rotation.y);
-  newPoint.z = holder.x * quickSine(rotation.y) + holder.z * quickCosine(rotation.y);
-  holder = newPoint;
+    if(order[i] == 'y')
+    {
+      newPoint.x = holder.x * quickCosine(rotation.y) + holder.z * -quickSine(rotation.y);
+      newPoint.z = holder.x * quickSine(rotation.y) + holder.z * quickCosine(rotation.y);
+      holder = newPoint;
+    }
 
-  newPoint.x = holder.x * quickCosine(rotation.z) + holder.y * -quickSine(rotation.z);
-  newPoint.y = holder.x * quickSine(rotation.z) + holder.y * quickCosine(rotation.z);
+    if(order[i] == 'z')
+    {
+      newPoint.x = holder.x * quickCosine(rotation.z) + holder.y * -quickSine(rotation.z);
+      newPoint.y = holder.x * quickSine(rotation.z) + holder.y * quickCosine(rotation.z);
+      holder = newPoint;
+    }
+  }
 
   newPoint += pivot;
+
+  return newPoint;
+}
+
+Geometry::point rotateAroundCamera(Geometry::point oldPoint)
+{
+  Geometry::point newPoint{oldPoint};
+
+  // newPoint = rotate(RenderData::camera.location, newPoint, {0, -RenderData::camera.rotation.y, 0});
+  // newPoint = rotate(RenderData::camera.location, newPoint, {-RenderData::camera.rotation.x, 0, 0});
+  // newPoint = rotate(RenderData::camera.location, newPoint, {0, 0, -RenderData::camera.rotation.z});
+  newPoint = rotate(RenderData::camera.location, newPoint, -RenderData::camera.rotation, "yxz");
 
   return newPoint;
 }
@@ -42,7 +67,7 @@ SDL_Point convertToSDLPoint(Geometry::point oldPoint)
 
   SDL_Point newPoint{0, 0};
 
-  Geometry::point rotationAdjustedPoint{rotate(camera.location, oldPoint, -camera.rotation)};
+  Geometry::point rotationAdjustedPoint{rotateAroundCamera(oldPoint)};
   newPoint.x = (int)(((yResolution + xResolution)/(FIELD_OF_VIEW) * quickATan(rotationAdjustedPoint.x - camera.location.x, rotationAdjustedPoint.z - camera.location.z))+(xResolution/2));
   newPoint.y = (int)(((yResolution + xResolution)/(FIELD_OF_VIEW) * -quickATan(rotationAdjustedPoint.y - camera.location.y, rotationAdjustedPoint.z - camera.location.z))+(yResolution/2));
 

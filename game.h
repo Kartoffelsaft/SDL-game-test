@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include <vector>
+#include <cmath>
+#include "math.h"
 
 namespace RenderData
 {
@@ -39,4 +41,5 @@ float quickTangent(float);
 
 float quickATan(float, float);
 
-Geometry::point rotate(Geometry::point, Geometry::point, Geometry::point);
+Geometry::point rotate(Geometry::point, Geometry::point, Geometry::point, const char order[3] = "xyz");
+Geometry::point rotateAroundCamera(Geometry::point);

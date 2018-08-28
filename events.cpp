@@ -21,16 +21,20 @@ void keyboardState()
     {camera.move(LOC_UP * 5);}
     if(keys[SDL_SCANCODE_F])
     {camera.move(LOC_DOWN * 5);}
-  }
 
-  if(keys[SDL_SCANCODE_UP])
-  {camera.rotation.x += 2;}
-  if(keys[SDL_SCANCODE_DOWN])
-  {camera.rotation.x -= 2;}
-  if(keys[SDL_SCANCODE_RIGHT])
-  {camera.rotation.y += 2;}
-  if(keys[SDL_SCANCODE_LEFT])
-  {camera.rotation.y -= 2;}
+    if(keys[SDL_SCANCODE_UP])
+    {camera.look(ROT_UP * 2);}
+    if(keys[SDL_SCANCODE_DOWN])
+    {camera.look(ROT_DOWN * 2);}
+    if(keys[SDL_SCANCODE_RIGHT])
+    {camera.look(ROT_RIGHT * 2);}
+    if(keys[SDL_SCANCODE_LEFT])
+    {camera.look(ROT_LEFT * 2);}
+    if(keys[SDL_SCANCODE_Q])
+    {camera.look(ROT_ROLL_LEFT * 2);}
+    if(keys[SDL_SCANCODE_E])
+    {camera.look(ROT_ROLL_RIGHT * 2);}
+  }
 }
 
 void events()

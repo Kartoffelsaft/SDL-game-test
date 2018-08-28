@@ -1,8 +1,5 @@
 #include "game.h"
 
-#include <cmath>
-#include "math.h"
-
 const int SINE_RESOLUTION{8000};
 static float sineTable[SINE_RESOLUTION]{0};
 const float PI{3.14159265};
