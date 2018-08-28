@@ -34,6 +34,9 @@ void keyboardState()
     {camera.look(ROT_ROLL_LEFT * 2);}
     if(keys[SDL_SCANCODE_E])
     {camera.look(ROT_ROLL_RIGHT * 2);}
+
+    if(keys[SDL_SCANCODE_P])
+    {camera.rotation = {0, 0, 0};}
   }
 }
 
