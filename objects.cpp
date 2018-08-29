@@ -44,6 +44,8 @@ mesh generateMesh(const char* objFile, point location)
         else
         {newNumber.push_back(content.at(i));}
       }
+
+      newMesh.vertecies.shrink_to_fit();
     }
 
     if(content[0] == 'f')
@@ -67,6 +69,8 @@ mesh generateMesh(const char* objFile, point location)
         else
         {newNumber.push_back(content.at(i));}
       }
+
+      newMesh.polys.shrink_to_fit();
     }
   }
 
