@@ -68,32 +68,38 @@ namespace Geometry
   const point LOC_BACK{0, 0, -1};
   const point ROT_ROLL_LEFT{0, 0, -1};
 
-  class triangle
+  class polygon
   {
   public:
-    point* A;
-    point* B;
-    point* C;
+    point* vertecies;
 
-    triangle()
+    polygon()
     {
-      A = 0;
-      B = 0;
-      C = 0;
+      vertecies = 0;
     }
-    ~triangle()
+    ~polygon()
     {
-      delete A;
-      delete B;
-      delete C;
+      delete vertecies;
     }
+  };
+
+  class bone
+  {
+  public:
+    point* vertecies;
+    point pivot;
+    point rotation;
   };
 
   class mesh
   {
   public:
+    point location;
+    point rotation;
+
     std::vector<point> points;
-    std::vector<triangle> tris;
+    std::vector<polygon> polys;
+    std::vector<bone> bones;
   };
 
   class camera
