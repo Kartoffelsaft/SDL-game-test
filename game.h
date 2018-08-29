@@ -31,6 +31,8 @@ void shutdown();
 bool running();
 void beginShutdown();
 
+Geometry::mesh generateMesh(const char*, Geometry::point);
+
 
 SDL_Point* convertToSDLPointArray(std::vector<Geometry::point>);
 

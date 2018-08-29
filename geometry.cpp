@@ -43,4 +43,6 @@ namespace Geometry
     this->rotation.y = fmodf(this->rotation.y, 360);
     this->rotation.x = fmodf(this->rotation.x, 360);
   }
+
+  std::vector<mesh> meshes;
 }

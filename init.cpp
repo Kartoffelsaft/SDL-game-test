@@ -29,4 +29,6 @@ void init()
     SDL_GetRendererInfo(renderer, &info);
     std::cout << info.name << std::endl;
   }
+
+  Geometry::meshes.push_back(generateMesh("./objects/testobject.obj", {0, 0, 100}));
 }

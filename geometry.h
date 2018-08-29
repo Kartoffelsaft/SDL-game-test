@@ -71,16 +71,7 @@ namespace Geometry
   class polygon
   {
   public:
-    point* vertecies;
-
-    polygon()
-    {
-      vertecies = 0;
-    }
-    ~polygon()
-    {
-      delete vertecies;
-    }
+    std::vector<point*> vertecies;
   };
 
   class bone
@@ -97,9 +88,15 @@ namespace Geometry
     point location;
     point rotation;
 
-    std::vector<point> points;
+    std::vector<point> vertecies;
     std::vector<polygon> polys;
     std::vector<bone> bones;
+
+    mesh()
+    {
+      location = {0, 0, 0};
+      rotation = {0, 0, 0};
+    }
   };
 
   class camera
@@ -111,4 +108,6 @@ namespace Geometry
     void move(point);
     void look(point);
   };
+
+  extern std::vector<mesh> meshes;
 }
