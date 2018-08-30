@@ -30,5 +30,5 @@ void init()
     std::cout << info.name << std::endl;
   }
 
-  Geometry::meshes.push_back(generateMesh("./objects/testobject.obj", {0, 0, 100}));
+  Geometry::meshes.push_back(generateMesh("./objects/testobject.obj", {0, 0, 1000}));
 }

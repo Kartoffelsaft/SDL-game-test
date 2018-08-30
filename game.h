@@ -34,7 +34,7 @@ void beginShutdown();
 Geometry::mesh generateMesh(const char*, Geometry::point);
 
 
-SDL_Point* convertToSDLPointArray(std::vector<Geometry::point*>);
+SDL_Point* convertToSDLPointArray(std::vector<Geometry::point*>, Geometry::point);
 
 
 float quickSine(float);

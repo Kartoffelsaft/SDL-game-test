@@ -88,13 +88,13 @@ SDL_Point convertToSDLPoint(Geometry::point oldPoint)
   return newPoint;
 }
 
-SDL_Point* convertToSDLPointArray(std::vector<Geometry::point*> oldPoints)
+SDL_Point* convertToSDLPointArray(std::vector<Geometry::point*> oldPoints, Geometry::point offset)
 {
   std::vector<SDL_Point> newPoints(oldPoints.size() + 2); //the new points are offset by one because the vector corrupts the first element when being turned into an array
 
   for(int i{0}; i < oldPoints.size(); i++)
   {
-    newPoints.at(i + 2) = convertToSDLPoint(oldPoints.at(i)[0]);
+    newPoints.at(i + 2) = convertToSDLPoint(oldPoints.at(i)[0] + offset);
 
     if(newPoints.at(i).x < -RenderData::xResolution/1.01 ||
        newPoints.at(i).x > RenderData::xResolution * 1.99 ||
