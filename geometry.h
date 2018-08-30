@@ -68,6 +68,15 @@ namespace Geometry
   const point LOC_BACK{0, 0, -1};
   const point ROT_ROLL_LEFT{0, 0, -1};
 
+  class color
+  {
+  public:
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
+    unsigned char alpha;
+  };
+
   class polygon
   {
   public:
@@ -87,6 +96,7 @@ namespace Geometry
   public:
     point location;
     point rotation;
+    color meshColor;
 
     std::vector<point> vertecies;
     std::vector<polygon> polys;
@@ -96,6 +106,7 @@ namespace Geometry
     {
       location = {0, 0, 0};
       rotation = {0, 0, 0};
+      meshColor = {0xFF, 0xFF, 0xFF, 0xFF};
     }
   };
 
