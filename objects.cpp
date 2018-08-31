@@ -30,7 +30,7 @@ mesh generateMesh(const char* objFile, point location)
         if(content.at(i) == ' ' || content.at(i) == '\n')
         {
           if(dimension == 1)
-          {newMesh.vertecies.back().x = std::stof(newNumber);}
+          {newMesh.vertecies.back().x = -std::stof(newNumber);}
           if(dimension == 2)
           {newMesh.vertecies.back().y = std::stof(newNumber);}
           if(dimension == 3)

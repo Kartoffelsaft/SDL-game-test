@@ -31,4 +31,5 @@ void init()
   }
 
   Geometry::meshes.push_back(generateMesh("./objects/testobject.obj", {0, 0, 1000}));
+  Geometry::meshes.push_back(generateMesh("./objects/saxis.obj", {0, 0, 400}));
 }
