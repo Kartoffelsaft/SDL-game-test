@@ -19,7 +19,7 @@ void renderMesh(Geometry::mesh mesh)
 
   for(int i{0}; i < mesh.polys.size(); i++)
   {
-    if(SDL_RenderDrawLines(renderer, convertToSDLPointArray(mesh.polys.at(i).vertecies, mesh.location), mesh.polys.at(i).vertecies.size() + 1) != 0)
+    if(SDL_RenderDrawLines(renderer, convertToSDLPointArray(mesh.polys.at(i).vertecies, mesh.location, mesh.rotation), mesh.polys.at(i).vertecies.size() + 1) != 0)
     {std::cout << SDL_GetError() << std::endl;}
   }
 }

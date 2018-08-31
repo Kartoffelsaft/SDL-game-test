@@ -37,6 +37,8 @@ void keyboardState()
 
     if(keys[SDL_SCANCODE_P])
     {camera.rotation = {0, 0, 0};}
+    if(keys[SDL_SCANCODE_O])
+    {meshes.at(1).rotation += {0, 5, 0};}
   }
 }
 
