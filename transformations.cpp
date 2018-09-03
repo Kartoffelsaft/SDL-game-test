@@ -61,57 +61,59 @@ Geometry::point rotateAroundCamera(Geometry::point oldPoint)
   return newPoint;
 }
 
-SDL_Point convertToSDLPoint(Geometry::point oldPoint)
+SDL_Point convertToSDLPoint(Geometry::point oldPoint, Geometry::point meshOrigin, Geometry::point meshRotation, bool *renderable)
 {
   using namespace RenderData;
 
   SDL_Point newPoint{0, 0};
 
-  Geometry::point rotationAdjustedPoint{rotateAroundCamera(oldPoint)};
-  newPoint.x = (int)(((yResolution + xResolution)/(FIELD_OF_VIEW) * quickATan(rotationAdjustedPoint.x - camera.location.x, rotationAdjustedPoint.z - camera.location.z))+(xResolution/2));
-  newPoint.y = (int)(((yResolution + xResolution)/(FIELD_OF_VIEW) * -quickATan(rotationAdjustedPoint.y - camera.location.y, rotationAdjustedPoint.z - camera.location.z))+(yResolution/2));
+  Geometry::point rotationAdjustedPoint{rotate(meshOrigin, oldPoint, -meshRotation)};
+  rotationAdjustedPoint = rotateAroundCamera(rotationAdjustedPoint);
+  newPoint.x = (((yResolution + xResolution)/(FIELD_OF_VIEW) * quickATan(rotationAdjustedPoint.x - camera.location.x, rotationAdjustedPoint.z - camera.location.z))+(xResolution/2));
+  newPoint.y = (((yResolution + xResolution)/(FIELD_OF_VIEW) * -quickATan(rotationAdjustedPoint.y - camera.location.y, rotationAdjustedPoint.z - camera.location.z))+(yResolution/2));
 
-  if(rotationAdjustedPoint.z - camera.location.z
-     < 0)
+  if(rotationAdjustedPoint.z - camera.location.z < 0)
   {
-    if(newPoint.x > xResolution/2)
-    {newPoint.x = -xResolution;}
-    if(newPoint.x < xResolution/2)
-    {newPoint.x = 2 * xResolution;}
+    *renderable = false;
 
-    if(newPoint.y > yResolution/2)
-    {newPoint.y = -yResolution;}
-    if(newPoint.y < yResolution/2)
-    {newPoint.y = 2 * yResolution;}
+    // if(newPoint.x > xResolution/2)
+    // {newPoint.x = -xResolution;}
+    // if(newPoint.x < xResolution/2)
+    // {newPoint.x = 2 * xResolution;}
+    //
+    // if(newPoint.y > yResolution/2)
+    // {newPoint.y = -yResolution;}
+    // if(newPoint.y < yResolution/2)
+    // {newPoint.y = 2 * yResolution;}
   }
 
   return newPoint;
 }
 
-SDL_Point* convertToSDLPointArray(std::vector<Geometry::point*> oldPoints, Geometry::point offset, Geometry::point rotation)
-{
-  std::vector<SDL_Point> newPoints(oldPoints.size() + 2); //the new points are offset by one because the vector corrupts the first element when being turned into an array
-
-  for(int i{0}; i < oldPoints.size(); i++)
-  {
-    Geometry::point rotatedPoint{rotate(Geometry::ORIGIN, oldPoints.at(i)[0], -rotation)};
-    newPoints.at(i + 2) = convertToSDLPoint(rotatedPoint + offset);
-
-    if(newPoints.at(i).x < -RenderData::xResolution/1.01 ||
-       newPoints.at(i).x > RenderData::xResolution * 1.99 ||
-       newPoints.at(i).y < -RenderData::yResolution/1.01 ||
-       newPoints.at(i).y > RenderData::yResolution * 1.99)
-    {
-      goto dontRender;
-    }
-  }
-
-  finish:
-  newPoints.at(1) = newPoints.back();
-  return &newPoints[1];
-
-  dontRender:
-    for(int i{0}; i < newPoints.size(); i++)
-    {newPoints.at(i) = {-1, -1};}
-    goto finish;
-}
+// SDL_Point* convertToSDLPointArray(std::vector<Geometry::point*> oldPoints, Geometry::point offset, Geometry::point rotation)
+// {
+//   std::vector<SDL_Point> newPoints(oldPoints.size() + 2); //the new points are offset by one because the vector corrupts the first element when being turned into an array
+//
+//   for(int i{0}; i < oldPoints.size(); i++)
+//   {
+//     Geometry::point rotatedPoint{rotate(Geometry::ORIGIN, oldPoints.at(i)[0], -rotation)};
+//     newPoints.at(i + 2) = convertToSDLPoint(rotatedPoint + offset);
+//
+//     if(newPoints.at(i).x < -RenderData::xResolution/1.01 ||
+//        newPoints.at(i).x > RenderData::xResolution * 1.99 ||
+//        newPoints.at(i).y < -RenderData::yResolution/1.01 ||
+//        newPoints.at(i).y > RenderData::yResolution * 1.99)
+//     {
+//       goto dontRender;
+//     }
+//   }
+//
+//   finish:
+//     newPoints.at(1) = newPoints.back();
+//     return &newPoints[1];
+//
+//   dontRender:
+//     for(int i{0}; i < newPoints.size(); i++)
+//     {newPoints.at(i) = {-1, -1};}
+//     goto finish;
+// }

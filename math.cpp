@@ -1,6 +1,7 @@
 #include "game.h"
 
 const int SINE_RESOLUTION{8000};
+const int ROOT_ITERATIONS{20};
 static float sineTable[SINE_RESOLUTION]{0};
 const float PI{3.14159265};
 
@@ -75,4 +76,28 @@ float quickATan(float opposite, float adjacent)
   return mid;
 
   // return atan(opposite/adjacent) * 180/PI;
+}
+
+float quickSquareRoot(float x)
+{
+  float min{0};
+  float max{x};
+  float mid{(min+max)/2};
+
+  float rootCheck{mid*mid};
+
+  for(int i{0}; i < ROOT_ITERATIONS; i++)
+  {
+    if(rootCheck > x)
+    {max = mid;}
+    if(rootCheck < x)
+    {min = mid;}
+    if(rootCheck == x)
+    {return mid;}
+
+    mid = (min + max)/2;
+    rootCheck = mid*mid;
+  }
+
+  return mid;
 }

@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include <SDL2/SDL.h>
+
 #include <vector>
 
 namespace Geometry
@@ -75,6 +77,17 @@ namespace Geometry
     unsigned char green;
     unsigned char blue;
     unsigned char alpha;
+  };
+
+
+  class screenPolyInfo
+  {
+  public:
+    SDL_Point* points;
+    int pointCount;
+    float distance;
+    color polyColor;
+    bool renderable;
   };
 
   class polygon

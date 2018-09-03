@@ -34,6 +34,7 @@ void beginShutdown();
 Geometry::mesh generateMesh(const char*, Geometry::point);
 
 
+SDL_Point convertToSDLPoint(Geometry::point, Geometry::point, Geometry::point, bool*);
 SDL_Point* convertToSDLPointArray(std::vector<Geometry::point*>, Geometry::point, Geometry::point);
 
 
@@ -42,6 +43,8 @@ float quickCosine(float);
 float quickTangent(float);
 
 float quickATan(float, float);
+
+float quickSquareRoot(float);
 
 Geometry::point rotate(Geometry::point, Geometry::point, Geometry::point, const char order[3] = "xyz");
 Geometry::point rotateAroundCamera(Geometry::point);
