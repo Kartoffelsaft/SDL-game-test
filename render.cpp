@@ -91,17 +91,20 @@ void renderMeshes()
         points[k] = convertToSDLPoint(*Geometry::meshes.at(i).polys.at(j).vertecies.at(k), Geometry::meshes.at(i).location, Geometry::meshes.at(i).rotation, &renderable);
         pointTotal += *Geometry::meshes.at(i).polys.at(j).vertecies.at(k);
 
-        if(points[k].x < -xResolution/1.01 ||
-           points[k].x > xResolution * 1.99 ||
-           points[k].y < -yResolution/1.01 ||
-           points[k].y > yResolution * 1.99)
-        {renderable = false;}
+        // if(points[k].x < -xResolution/1.01 ||
+        //    points[k].x > xResolution * 1.99 ||
+        //    points[k].y < -yResolution/1.01 ||
+        //    points[k].y > yResolution * 1.99)
+        // {renderable = false;}
       }
 
       points[pointCount - 1] = points[0];
 
       pointTotal *= 1/(float)pointCount;
       float avgDistance{quickSquareRoot(pointTotal.x*pointTotal.x + pointTotal.y*pointTotal.y + pointTotal.z*pointTotal.z)};
+
+      // if(renderable)
+      // {std::cout << points[0].x << " " << points[0].y << std::endl;}
 
       screenData.push_back({points, pointCount, avgDistance, Geometry::meshes.at(i).meshColor, renderable});
     }
@@ -117,13 +120,13 @@ void renderMeshes()
         {
           for(int k{0}; k < screenData.at(j).pointCount; k++)
           {
-            if(inPoly(screenData.at(i).points, screenData.at(j).points[k], screenData.at(j).pointCount))
-            {
-              if(screenData.at(i).distance < screenData.at(j).distance)
-              {screenData.at(j).renderable = false;}
-              if(screenData.at(i).distance > screenData.at(j).distance)
-              {screenData.at(i).renderable = false;}
-            }
+            // if(inPoly(screenData.at(i).points, screenData.at(j).points[k], screenData.at(j).pointCount))
+            // {
+            //   // if(screenData.at(i).distance < screenData.at(j).distance)
+            //   // {screenData.at(j).renderable = false;}
+            //   // if(screenData.at(i).distance > screenData.at(j).distance)
+            //   // {screenData.at(i).renderable = false;}
+            // }
           }
         }
       }
@@ -134,6 +137,8 @@ void renderMeshes()
   {
     if(screenData.at(i).renderable)
     {
+      std::cout << screenData.at(i).points[0].x << " " << screenData.at(i).points[0].y << screenData.at(i).points[1].x << " " << screenData.at(i).points[1].y << std::endl;
+
       if(SDL_SetRenderDrawColor(renderer, screenData.at(i).polyColor.red, screenData.at(i).polyColor.green, screenData.at(i).polyColor.blue, screenData.at(i).polyColor.alpha) != 0)
       {std::cout << SDL_GetError() << std::endl;}
 
