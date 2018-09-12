@@ -1,7 +1,7 @@
 #include "game.h"
 
 const int SINE_RESOLUTION{8000};
-const int ROOT_ITERATIONS{20};
+const int ROOT_ITERATIONS{10};
 static float sineTable[SINE_RESOLUTION]{0};
 const float PI{3.14159265};
 

@@ -14,66 +14,126 @@ using namespace RenderData;
 
 bool inPoly(SDL_Point* points, SDL_Point point, int pointCount)
 {
-  SDL_Point polyCenter{0, 0};
-  for(int i{0}; i < pointCount; i++)
+  std::vector<int> polyYintercepts(pointCount/2);
+
+  for(int i{0}; i < pointCount - 1; i++)
   {
-    polyCenter.x += points[i].x;
-    polyCenter.y += points[i].y;
-  }
-  polyCenter.x /= pointCount;
-  polyCenter.y /= pointCount;
+    if(point.x == points[i].x)
+    {polyYintercepts.push_back({points[i].y});}
+    else if(point.x == points[i+1].x)
+    {polyYintercepts.push_back({points[i+1].y});}
 
-  for(int i{0}; i+1 < pointCount; i++)
-  {
-    float slope;
-    if(points[i].x - points[i+1].x == 0)
-    {continue;}
-    slope = (points[i].y - points[i+1].y)/(points[i].x - points[i+1].x);
-
-    bool iLeft{false};
-    bool centerAbove{false};
-    bool pointCheckAbove{false};
-
-    if(points[i].x < points[i+1].x)
-    {iLeft = true;}
-
-    if(iLeft)
+    else if((point.x > points[i].x && point.x < points[i+1].x) ||
+       (point.x < points[i].x && point.x > points[i+1].x))
     {
-      // if(polyCenter.x >= points[i].x && polyCenter.x <= points[i+1].x)
-      // {
-        if(polyCenter.y > (polyCenter.x - points[i].x) * slope + points[i].y)
-        {centerAbove = true;}
-      // }
-      // if(point.x >= points[i].x && point.x <= points[i+1].x)
-      // {
-        if(point.y == (int)((point.x - points[i].x) * slope + points[i].y))
-        {continue;}
-
-        if(point.y > (point.x - points[i].x) * slope + points[i].y)
-        {pointCheckAbove = true;}
-    //   }
+      polyYintercepts.push_back({(points[i].y-points[i+1].y)*((point.x - points[i].x)/(points[i+1].x - points[i].x)) + points[i].y});
     }
-    else
-    {
-    //   if(polyCenter.x > points[i+1].x && polyCenter.x < points[i].x)
-    //   {
-        if(polyCenter.y > (polyCenter.x - points[i+1].x) * slope + points[i+1].y)
-        {centerAbove = true;}
-      // }
-      // if(point.x > points[i+1].x && point.x < points[i].x)
-      // {
-        if(point.y > (point.x - points[i+1].x) * slope + points[i+1].y)
-        {pointCheckAbove = true;}
-      // }
-    }
-
-    if(pointCheckAbove == centerAbove)
-    {continue;}
-    else
-    {return false;}
   }
 
-  return true;
+  bool segmentInPoly{true};
+
+  for(int i{1}; i < polyYintercepts.size(); i++)
+  {
+    if(point.y > polyYintercepts.at(i-1) && point.y < polyYintercepts.at(i))
+    {return segmentInPoly;}
+    else
+    {segmentInPoly ^= true;}
+  }
+
+  return false;
+
+  // SDL_Point polyCenter{0, 0};
+  // for(int i{0}; i < pointCount; i++)
+  // {
+  //   polyCenter.x += points[i].x;
+  //   polyCenter.y += points[i].y;
+  // }
+  // polyCenter.x /= pointCount;
+  // polyCenter.y /= pointCount;
+  //
+  // bool onEdge{false}; //keeps track of wether or not this point is sitting on the edge of the polygon
+  //
+  // for(int i{0}; i+1 < pointCount; i++)
+  // {
+  //   float slope;
+  //   if(points[i].x == points[i+1].x)
+  //   {
+  //     bool centerLeft{false};
+  //     bool pointLeft{false};
+  //
+  //     if(polyCenter.x < points[i].x)
+  //     {centerLeft = true;}
+  //     if(point.x < points[i].x)
+  //     {pointLeft = true;}
+  //     if(point.x == points[i].x)
+  //     {
+  //       onEdge = true;
+  //       continue;
+  //     }
+  //
+  //     if(centerLeft == pointLeft)
+  //     {continue;}
+  //     else
+  //     {return false;}
+  //   }
+  //   slope = (points[i].y - points[i+1].y)/(points[i].x - points[i+1].x);
+  //
+  //   bool iLeft{false};
+  //   bool centerAbove{false};
+  //   bool pointCheckAbove{false};
+  //
+  //   if(points[i].x < points[i+1].x)
+  //   {iLeft = true;}
+  //
+  //   if(iLeft)
+  //   {
+  //     float edgeY{(polyCenter.x - points[i].x) * slope + points[i].y};
+  //     // if(polyCenter.x >= points[i].x && polyCenter.x <= points[i+1].x)
+  //     // {
+  //       if(polyCenter.y > edgeY)
+  //       {centerAbove = true;}
+  //     // }
+  //     // if(point.x >= points[i].x && point.x <= points[i+1].x)
+  //     // {
+  //       if(point.y - edgeY < 1 && point.y - edgeY > -1)
+  //       {
+  //         onEdge = true;
+  //         continue;
+  //       }
+  //
+  //       if(point.y > edgeY)
+  //       {pointCheckAbove = true;}
+  //   //   }
+  //   }
+  //   else
+  //   {
+  //     float edgeY{(polyCenter.x - points[i+1].x) * slope + points[i+1].y};
+  //   //   if(polyCenter.x > points[i+1].x && polyCenter.x < points[i].x)
+  //   //   {
+  //       if(polyCenter.y > edgeY)
+  //       {centerAbove = true;}
+  //     // }
+  //     // if(point.x > points[i+1].x && point.x < points[i].x)
+  //     // {
+  //
+  //       if(point.y - edgeY < 1 && point.y - edgeY > -1)
+  //       {
+  //         onEdge = true;
+  //         continue;
+  //       }
+  //
+  //       if(point.y > edgeY)
+  //       {pointCheckAbove = true;}
+  //     // }
+  //   }
+  //
+  //   if(pointCheckAbove == centerAbove)
+  //   {continue;}
+  //   else
+  //   {return false;}
+  // }
+  //
+  // return !onEdge;
 }
 
 void renderMeshes()
@@ -106,6 +166,7 @@ void renderMeshes()
       points.back() = points[0];
 
       pointTotal *= 1/(float)(pointCount - 1);
+      pointTotal -= camera.location;
       float avgDistance{quickSquareRoot(pointTotal.x*pointTotal.x + pointTotal.y*pointTotal.y + pointTotal.z*pointTotal.z)};
 
       screenData.push_back({points, pointCount, avgDistance, Geometry::meshes.at(i).meshColor, renderable});
@@ -122,12 +183,14 @@ void renderMeshes()
         {
           for(int k{0}; k < screenData.at(j).pointCount; k++)
           {
-            if(inPoly(screenData.at(i).points.data(), screenData.at(j).points[k], screenData.at(j).pointCount))
+            if(inPoly(screenData.at(i).points.data(), screenData.at(j).points[k], screenData.at(i).pointCount))
             {
               if(screenData.at(i).distance < screenData.at(j).distance)
               {screenData.at(j).renderable = false;}
               if(screenData.at(i).distance > screenData.at(j).distance)
               {screenData.at(i).renderable = false;}
+
+              break;
             }
           }
         }
@@ -139,8 +202,6 @@ void renderMeshes()
   {
     if(screenData.at(i).renderable)
     {
-      std::cout << screenData.at(i).points[0].x << " " << screenData.at(i).points[0].y << "; " << screenData.at(i).points[1].x << " " << screenData.at(i).points[1].y << std::endl;
-
       if(SDL_SetRenderDrawColor(renderer, screenData.at(i).polyColor.red, screenData.at(i).polyColor.green, screenData.at(i).polyColor.blue, screenData.at(i).polyColor.alpha) != 0)
       {std::cout << SDL_GetError() << std::endl;}
 
