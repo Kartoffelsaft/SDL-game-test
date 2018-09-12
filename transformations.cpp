@@ -67,14 +67,14 @@ SDL_Point convertToSDLPoint(Geometry::point oldPoint, Geometry::point meshOrigin
 
   SDL_Point newPoint{0, 0};
 
-  Geometry::point rotationAdjustedPoint{rotate(meshOrigin, oldPoint, -meshRotation)};
+  Geometry::point rotationAdjustedPoint{rotate(Geometry::ORIGIN, oldPoint, -meshRotation) + meshOrigin};
   rotationAdjustedPoint = rotateAroundCamera(rotationAdjustedPoint);
   newPoint.x = (((yResolution + xResolution)/(2*FIELD_OF_VIEW) * quickATan(rotationAdjustedPoint.x - camera.location.x, rotationAdjustedPoint.z - camera.location.z))+(xResolution/2));
   newPoint.y = (((yResolution + xResolution)/(2*FIELD_OF_VIEW) * -quickATan(rotationAdjustedPoint.y - camera.location.y, rotationAdjustedPoint.z - camera.location.z))+(yResolution/2));
 
   if(rotationAdjustedPoint.z - camera.location.z < 0)
   {
-    // *renderable = false;
+    *renderable = false;
 
     // if(newPoint.x > xResolution/2)
     // {newPoint.x = -xResolution;}

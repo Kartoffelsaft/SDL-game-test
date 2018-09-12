@@ -83,7 +83,7 @@ namespace Geometry
   class screenPolyInfo
   {
   public:
-    SDL_Point* points;
+    std::vector<SDL_Point> points;
     int pointCount;
     float distance;
     color polyColor;
