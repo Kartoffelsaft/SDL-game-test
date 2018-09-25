@@ -6,7 +6,7 @@
 
 using namespace Geometry;
 
-mesh generateMesh(const char* objFile, point location)
+mesh generateMesh(const char* objFile, point location)      //uses an obj file to place a mesh at a given location
 {
   std::ifstream file;
   std::string content;

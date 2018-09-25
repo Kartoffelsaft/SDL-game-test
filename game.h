@@ -31,7 +31,7 @@ void shutdown();
 bool running();
 void beginShutdown();
 
-Geometry::mesh generateMesh(const char*, Geometry::point);
+Geometry::mesh generateMesh(const char* objFile, Geometry::point location);
 
 
 SDL_Point convertToSDLPoint(Geometry::point, Geometry::point, Geometry::point, bool*);
