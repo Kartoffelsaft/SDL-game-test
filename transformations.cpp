@@ -1,26 +1,12 @@
 #include "game.h"
 
-Geometry::point rotate(Geometry::point pivot, Geometry::point oldPoint, Geometry::point rotation, const char order[3])
-{
+Geometry::point rotate(Geometry::point pivot, Geometry::point oldPoint, Geometry::point rotation, const char order[3])  //returns a point that is oldPoint rotated by rotation around pivot
+{                                                                                                                       //the order[3] is just so that it can be told which axis to rotate around first 
   Geometry::point newPoint{oldPoint - pivot};
-  // Geometry::point relativePoint{oldPoint.x - pivot.x, oldPoint.y - pivot.y, oldPoint.z - pivot.z};
-
-  // newPoint.x = relativePoint.x + (relativePoint.x * (quickCosine(rotation.y) + quickCosine(rotation.z))) - (relativePoint.x * (quickSine(rotation.y) + quickSine(rotation.z))) + pivot.x;
-  // newPoint.y = relativePoint.y + (relativePoint.y * (quickCosine(rotation.x) + quickCosine(rotation.z))) - (relativePoint.y * (quickSine(rotation.x) + quickSine(rotation.z))) + pivot.y;
-  // newPoint.z = relativePoint.z + (relativePoint.z * (quickCosine(rotation.y) + quickCosine(rotation.x))) - (relativePoint.z * (quickSine(rotation.y) + quickSine(rotation.x))) + pivot.z;
-
-  // newPoint.y *= quickCosine(rotation.x) + quickSine(rotation.x);
-  // newPoint.z *= -quickSine(rotation.x) + quickCosine(rotation.x);
-  //
-  // newPoint.x *= quickCosine(rotation.y) + quickSine(rotation.y);
-  // newPoint.z *= -quickSine(rotation.y) + quickCosine(rotation.y);
-  //
-  // newPoint.x *= quickCosine(rotation.z) + quickSine(rotation.z);
-  // newPoint.y *= -quickSine(rotation.z) + quickCosine(rotation.z);
 
   Geometry::point holder{newPoint};
 
-  for(int i{0}; i < 3; i++)
+  for(int i{0}; i < 3; i++)//roughly based on vector rotation
   {
     if(order[i] == 'x')
     {
@@ -52,64 +38,27 @@ Geometry::point rotate(Geometry::point pivot, Geometry::point oldPoint, Geometry
 Geometry::point rotateAroundCamera(Geometry::point oldPoint)
 {
   Geometry::point newPoint{oldPoint};
-
-  // newPoint = rotate(RenderData::camera.location, newPoint, {0, -RenderData::camera.rotation.y, 0});
-  // newPoint = rotate(RenderData::camera.location, newPoint, {-RenderData::camera.rotation.x, 0, 0});
-  // newPoint = rotate(RenderData::camera.location, newPoint, {0, 0, -RenderData::camera.rotation.z});
-  newPoint = rotate(RenderData::camera.location, newPoint, -RenderData::camera.rotation, "yxz");
+  newPoint = rotate(RenderData::camera.location, newPoint, -RenderData::camera.rotation, "yxz");//yxz order used because it biases rotation around y more heavily
 
   return newPoint;
 }
 
-SDL_Point convertToSDLPoint(Geometry::point oldPoint)
+SDL_Point convertToSDLPoint(Geometry::point oldPoint, Geometry::point meshOrigin, Geometry::point meshRotation, bool *renderable)   //takes a point in 3d space and tries to place it in the 2d surface
 {
   using namespace RenderData;
 
   SDL_Point newPoint{0, 0};
 
-  Geometry::point rotationAdjustedPoint{rotateAroundCamera(oldPoint)};
-  newPoint.x = (int)(((yResolution + xResolution)/(FIELD_OF_VIEW) * quickATan(rotationAdjustedPoint.x - camera.location.x, rotationAdjustedPoint.z - camera.location.z))+(xResolution/2));
-  newPoint.y = (int)(((yResolution + xResolution)/(FIELD_OF_VIEW) * -quickATan(rotationAdjustedPoint.y - camera.location.y, rotationAdjustedPoint.z - camera.location.z))+(yResolution/2));
+  Geometry::point rotationAdjustedPoint{rotate(Geometry::ORIGIN, oldPoint, -meshRotation) + meshOrigin};
+  rotationAdjustedPoint = rotateAroundCamera(rotationAdjustedPoint);                                        //tries to rotate the point so that it's relativity to 0, 0, 0 is what it was to the camera 
+  
+  newPoint.x = (((yResolution + xResolution)/(FIELD_OF_VIEW) * quickATan(rotationAdjustedPoint.x - camera.location.x, rotationAdjustedPoint.z - camera.location.z))+(xResolution/2));
+  newPoint.y = (((yResolution + xResolution)/(FIELD_OF_VIEW) * -quickATan(rotationAdjustedPoint.y - camera.location.y, rotationAdjustedPoint.z - camera.location.z))+(yResolution/2));
 
-  if(rotationAdjustedPoint.z - camera.location.z
-     < 0)
+  if(rotationAdjustedPoint.z - camera.location.z < 0)   //if the point is behind the camera, make it unrenderable
   {
-    if(newPoint.x > xResolution/2)
-    {newPoint.x = -xResolution;}
-    if(newPoint.x < xResolution/2)
-    {newPoint.x = 2 * xResolution;}
-
-    if(newPoint.y > yResolution/2)
-    {newPoint.y = -yResolution;}
-    if(newPoint.y < yResolution/2)
-    {newPoint.y = 2 * yResolution;}
+    *renderable = false;
   }
 
   return newPoint;
-}
-
-SDL_Point* convertToSDLPointArray(std::vector<Geometry::point> oldPoints)
-{
-  std::vector<SDL_Point> newPoints(oldPoints.size() + 1); //the new points are offset by one because the vector corrupts the first element when being turned into an array
-
-  for(int i{0}; i < oldPoints.size(); i++)
-  {
-    newPoints.at(i + 1) = convertToSDLPoint(oldPoints.at(i));
-
-    if(newPoints.at(i).x < -RenderData::xResolution/1.01 ||
-       newPoints.at(i).x > RenderData::xResolution * 1.99 ||
-       newPoints.at(i).y < -RenderData::yResolution/1.01 ||
-       newPoints.at(i).y > RenderData::yResolution * 1.99)
-    {
-      goto dontRender;
-    }
-  }
-
-  finish:
-  return &newPoints[1];
-
-  dontRender:
-    for(int i{0}; i < newPoints.size(); i++)
-    {newPoints.at(i) = {-1, -1};}
-    goto finish;
 }

@@ -1,12 +1,14 @@
 #include "game.h"
 
 const int SINE_RESOLUTION{8000};
+const int ATAN_ITERATIONS{20};
+const int ROOT_ITERATIONS{10};
 static float sineTable[SINE_RESOLUTION]{0};
 const float PI{3.14159265};
 
-float quickSine(float x)
+float quickSine(float x)        //generates a sine table if it is first being called. future calls reference that sine table
 {
-  if(sineTable[111] == 0) //some random value that shouldn't be 0
+  if(sineTable[111] == 0) //chaecking whether a sine teble has been generated (some random value that shouldn't be 0)
   {
     for(int i{0}; i < SINE_RESOLUTION; i++)
     {
@@ -28,10 +30,10 @@ float quickSine(float x)
   {return -quickSine(360-x);}
 }
 
-float quickCosine(float x)
+float quickCosine(float x)  //uses the sine table to generate a cosine
 {return quickSine(x+90);}
 
-float quickTangent(float x)
+float quickTangent(float x) //uses a division to generate a tangent
 {
   float sine{quickSine(x)};
   float cosine{quickCosine(x)};
@@ -44,7 +46,7 @@ float quickTangent(float x)
   return sine/cosine;
 }
 
-float quickATan(float opposite, float adjacent)
+float quickATan(float opposite, float adjacent)     //uses guess & check to do inverse tangent
 {
   float min{-90};
   float max{90};
@@ -56,7 +58,7 @@ float quickATan(float opposite, float adjacent)
   float tangent{opposite/adjacent};
   float aTanCheck{quickTangent(mid)};
 
-  while (std::abs(max - min) > 0.003)
+  for (int i{0}; i < ATAN_ITERATIONS; i++)
   {
     if(tangent > aTanCheck)
     {min = mid;}
@@ -75,4 +77,28 @@ float quickATan(float opposite, float adjacent)
   return mid;
 
   // return atan(opposite/adjacent) * 180/PI;
+}
+
+float quickSquareRoot(float x)      //uses guess & check to do square root
+{
+  float min{0};
+  float max{x};
+  float mid{(min+max)/2};
+
+  float rootCheck{mid*mid};
+
+  for(int i{0}; i < ROOT_ITERATIONS; i++)
+  {
+    if(rootCheck > x)
+    {max = mid;}
+    if(rootCheck < x)
+    {min = mid;}
+    if(rootCheck == x)
+    {return mid;}
+
+    mid = (min + max)/2;
+    rootCheck = mid*mid;
+  }
+
+  return mid;
 }

@@ -9,7 +9,7 @@ void keyboardState()
   {
     using namespace Geometry;
 
-    if(keys[SDL_SCANCODE_W])
+    if(keys[SDL_SCANCODE_W])            //camera movement
     {camera.move(LOC_FOWARD * 5);}
     if(keys[SDL_SCANCODE_S])
     {camera.move(LOC_BACK * 5);}
@@ -22,7 +22,7 @@ void keyboardState()
     if(keys[SDL_SCANCODE_F])
     {camera.move(LOC_DOWN * 5);}
 
-    if(keys[SDL_SCANCODE_UP])
+    if(keys[SDL_SCANCODE_UP])           //camera rotation
     {camera.look(ROT_UP * 2);}
     if(keys[SDL_SCANCODE_DOWN])
     {camera.look(ROT_DOWN * 2);}
@@ -35,8 +35,10 @@ void keyboardState()
     if(keys[SDL_SCANCODE_E])
     {camera.look(ROT_ROLL_RIGHT * 2);}
 
-    if(keys[SDL_SCANCODE_P])
+    if(keys[SDL_SCANCODE_P])            //reset camera rotation
     {camera.rotation = {0, 0, 0};}
+    if(keys[SDL_SCANCODE_O])            //just spins on of the meshes for testing
+    {meshes.at(1).rotation += {0, 5, 0};}
   }
 }
 
@@ -48,7 +50,7 @@ void events()
   {
     switch(event.type)
     {
-      case SDL_QUIT:
+      case SDL_QUIT:                    //rudiments of dealing with inputs
         beginShutdown();
 
       break; case SDL_KEYDOWN:
