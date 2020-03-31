@@ -1,3 +1,7 @@
+This is a really old project of mine. The rendering in this is slow, unintuitive, and broken. At least it is in 3D.
+
+___
+
 This will be very similar to the termgametest project I did, but using SDL instead of the terminal. Similarly, you use this to compile:
 
 make
